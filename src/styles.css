@@ -2,6 +2,12 @@
 @source "../src";
 @import "tw-animate-css";
 
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -62,26 +68,26 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.008 95);
+  --foreground: oklch(0.22 0.02 60);
+  --card: oklch(0.997 0.004 95);
+  --card-foreground: oklch(0.22 0.02 60);
+  --popover: oklch(0.997 0.004 95);
+  --popover-foreground: oklch(0.22 0.02 60);
+  --primary: oklch(0.33 0.06 168);
+  --primary-foreground: oklch(0.985 0.008 95);
+  --secondary: oklch(0.93 0.02 95);
+  --secondary-foreground: oklch(0.3 0.03 60);
+  --muted: oklch(0.94 0.012 95);
+  --muted-foreground: oklch(0.52 0.02 70);
+  --accent: oklch(0.62 0.15 55);
+  --accent-foreground: oklch(0.985 0.008 95);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.89 0.014 90);
+  --input: oklch(0.89 0.014 90);
+  --ring: oklch(0.62 0.15 55);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -141,4 +147,15 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+@theme inline {
+  --shadow-soft: 0 1px 2px oklch(0.3 0.03 60 / 0.05), 0 8px 24px oklch(0.3 0.03 60 / 0.06);
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, oklch(0.3 0.03 60 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.3 0.03 60 / 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
