@@ -49,7 +49,8 @@ function Index() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!problem.trim()) return;
-    mutation.mutate({ problem: problem.trim(), apiKey: apiKey.trim() || undefined });
+    const key = apiKey.trim();
+    mutation.mutate(key ? { problem: problem.trim(), apiKey: key } : { problem: problem.trim() });
   };
 
   return (
