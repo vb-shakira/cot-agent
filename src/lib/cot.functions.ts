@@ -30,11 +30,11 @@ function parse(raw: string, provider: string): CotResult {
   for (const line of lines) {
     const m = /^step\s*\d+\s*[:.)-]\s*(.+)$/i.exec(line);
     if (m) {
-      steps.push(m[1]);
+      steps.push(m[1]!);
       continue;
     }
     const f = /^\**final answer\**\s*[:.]?\s*(.+)$/i.exec(line);
-    if (f) final = f[1].replace(/\*/g, "").trim();
+    if (f) final = f[1]!.replace(/\*/g, "").trim();
   }
   if (steps.length === 0 && raw.trim()) {
     for (const line of lines.filter(Boolean)) steps.push(line);
