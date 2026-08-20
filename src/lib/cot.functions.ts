@@ -53,7 +53,7 @@ function parse(raw: string, provider: string): CotResult {
     if (f) final = f[1]!.replace(/\*/g, "").trim();
   }
   if (steps.length === 0 && raw.trim()) {
-    for (const line of lines.filter(Boolean)) steps.push(line);
+    for (const line of lines.filter(Boolean)) steps.push(splitStep(line));
   }
   return { steps, final, provider, raw };
 }
