@@ -9,35 +9,51 @@ const Input = z.object({
 const SYSTEM = `You are a careful math tutor that solves problems with explicit chain-of-thought reasoning.
 Always reply in EXACTLY this format and nothing else:
 
-Step 1: <one reasoning step, show the arithmetic>
-Step 2: <next step>
+Step 1: <short title of what this step does> | <the actual calculation / equation for this step>
+Step 2: <short title> | <calculation>
 ... (as many steps as needed, minimum 2)
 FINAL ANSWER: <the final answer only, concise>
 
-Never skip steps. Never add extra commentary before Step 1 or after the final answer.`;
+Rules:
+- Every step line MUST contain a "|" separating the plain-English title from the math work.
+- The title is a few words (e.g. "Find the rate of pipe A").
+- The math part shows the actual numbers/equation (e.g. "1/12 + 1/18 = 5/36 tank per minute").
+- Never skip steps. Never add extra commentary before Step 1 or after the final answer.`;
+
+export type CotStep = { title: string; work: string };
 
 export type CotResult = {
-  steps: string[];
+  steps: CotStep[];
   final: string;
   provider: string;
   raw: string;
 };
 
+function splitStep(text: string): CotStep {
+  const i = text.indexOf("|");
+  if (i === -1) {
+    const m = /^(.{3,80}?)[:—-]\s+(.+)$/.exec(text);
+    if (m) return { title: m[1]!.trim(), work: m[2]!.trim() };
+    return { title: "", work: text.trim() };
+  }
+  return { title: text.slice(0, i).trim(), work: text.slice(i + 1).trim() };
+}
+
 function parse(raw: string, provider: string): CotResult {
   const lines = raw.split("\n").map((l) => l.trim());
-  const steps: string[] = [];
+  const steps: CotStep[] = [];
   let final = "";
   for (const line of lines) {
     const m = /^step\s*\d+\s*[:.)-]\s*(.+)$/i.exec(line);
     if (m) {
-      steps.push(m[1]!);
+      steps.push(splitStep(m[1]!));
       continue;
     }
     const f = /^\**final answer\**\s*[:.]?\s*(.+)$/i.exec(line);
     if (f) final = f[1]!.replace(/\*/g, "").trim();
   }
   if (steps.length === 0 && raw.trim()) {
-    for (const line of lines.filter(Boolean)) steps.push(line);
+    for (const line of lines.filter(Boolean)) steps.push(splitStep(line));
   }
   return { steps, final, provider, raw };
 }

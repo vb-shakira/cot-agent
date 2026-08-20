@@ -151,7 +151,15 @@ function Index() {
                   <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary font-mono text-xs font-semibold text-secondary-foreground">
                     {i + 1}
                   </span>
-                  <p className="font-mono text-sm leading-relaxed text-foreground">{step}</p>
+                  <div className="min-w-0 space-y-1.5">
+                    <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                      Step {i + 1}
+                      {step.title ? ` · ${step.title}` : ""}
+                    </p>
+                    <p className="font-mono text-sm leading-relaxed break-words text-foreground">
+                      {step.work}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ol>
