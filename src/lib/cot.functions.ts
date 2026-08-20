@@ -127,12 +127,16 @@ async function callOpenAI(problem: string, apiKey: string): Promise<string> {
 export const solveWithCot = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => Input.parse(input))
   .handler(async ({ data }): Promise<CotResult> => {
-    const key = data.apiKey?.trim();
+    // Priority: key typed in the UI > saved OPENAI_API_KEY secret > Lovable AI.
+    const typedKey = data.apiKey?.trim();
+    const savedKey = process.env["OPENAI_API_KEY"]?.trim();
+    const key = typedKey || savedKey;
+    const label = typedKey ? "OpenAI (your key)" : "OpenAI (saved key)";
 
     if (key) {
       try {
         const text = await callOpenAI(data.problem, key);
-        if (text.trim()) return parse(text, "OpenAI (your key)");
+        if (text.trim()) return parse(text, label);
       } catch (error) {
         console.error("OpenAI failed, falling back to Lovable AI", error);
       }
